@@ -693,10 +693,10 @@ LRESULT CVideoDlg::OnEIDJoinChannelSuccess(WPARAM wParam, LPARAM lParam)
 			baseInfoTemp.channelname = cs2s(strChannelName);
 			UINT uid = lpAgoraObject->GetSelfUID();
 			baseInfoTemp.uSubuID = uid + 1;
-			baseInfoTemp.uMainuID = lpAgoraObject->GetSelfUID();
+			baseInfoTemp.uMainuID = uid;// lpAgoraObject->GetSelfUID();
 
-			lpAgoraObject->MuteRemoteAudio(uid + 1, TRUE);
-			lpAgoraObject->MuteRemoteVideo(uid + 1, TRUE);
+			lpAgoraObject->MuteRemoteAudio(baseInfoTemp.uSubuID, TRUE);
+			lpAgoraObject->MuteRemoteVideo(baseInfoTemp.uSubuID, TRUE);
 
 			char szbuf[24] = { '\0' };
 			COPYDATASTRUCT cd;
@@ -1092,7 +1092,9 @@ HWND CVideoDlg::GetRemoteVideoWnd(int nIndex)
 
 void CVideoDlg::RebindVideoWnd(uid_t uid)
 {
-	if (m_wndVideo[0].GetSafeHwnd() == NULL || m_wndLocal.GetSafeHwnd() == NULL)
+	if ( m_wndLocal.GetSafeHwnd() == NULL)
+		return;
+	if (uid == 0 || m_teacherUid == 0)
 		return;
 
 	VideoCanvas canvas;
@@ -1114,6 +1116,8 @@ void CVideoDlg::RebindVideoWnd(uid_t uid)
 		m_wndLocal.ShowWindow(SW_SHOW);
 	}
 	else if (uid == m_teacherUid + 1){//teacher screen 
+		if (m_shareWndDlg.GetTeacherScreenShareWnd() == NULL)
+			return;
 		m_shareWndDlg.MoveWindow(0, 0, 960, 720, 1);
 		m_shareWndDlg.ShowWindow(SW_SHOW);
 
