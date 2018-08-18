@@ -172,7 +172,7 @@ void CProcessScreenShareDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 void CProcessScreenShareDlg::OnClose()
 {
 	if (m_lpAgoraObject) {
-
+		m_lpAgoraObject->SetSCCParameter(TRUE);
 		m_lpAgoraObject->EnableScreenCapture(NULL, 0, NULL, FALSE);
 		m_lpAgoraObject->LeaveCahnnel();
 
@@ -272,7 +272,7 @@ inline void CProcessScreenShareDlg::initAgoraMedia()
 	m_lpAgoraObject->SetClientRole(CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER);
 	m_lpAgoraObject->SetChannelProfile(TRUE);
 	
-	CAgoraObject::GetAgoraObject()->GetEngine()->setVideoProfile(VIDEO_PROFILE_1080P, FALSE);
+	CAgoraObject::GetAgoraObject()->GetEngine()->setVideoProfile(VIDEO_PROFILE_LANDSCAPE_1080P, FALSE);
 	m_lpAgoraObject->MuteAllRemoteAudio(TRUE);
 	m_lpAgoraObject->MuteAllRemoteVideo(TRUE);
 }

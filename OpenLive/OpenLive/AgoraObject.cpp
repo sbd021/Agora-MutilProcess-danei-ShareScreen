@@ -331,18 +331,18 @@ BOOL CAgoraObject::EnableScreenCapture(HWND hWnd, int nCapFPS, LPCRECT lpCapRect
 
 	if (bEnable) {
 		if (lpCapRect == NULL)
-			ret = rep.startScreenCapture(hWnd, nCapFPS, NULL);
+			ret = m_lpAgoraEngine->startScreenCapture(hWnd, nCapFPS, NULL, nBitrate);
 		else {
 			rcCap.left = lpCapRect->left;
 			rcCap.right = lpCapRect->right;
 			rcCap.top = lpCapRect->top;
 			rcCap.bottom = lpCapRect->bottom;
 
-			ret = rep.startScreenCapture(hWnd, nCapFPS, &rcCap);
+			ret = m_lpAgoraEngine->startScreenCapture(hWnd, nCapFPS, &rcCap, nBitrate);
 		}
 	}
 	else
-		ret = rep.stopScreenCapture();
+		ret = m_lpAgoraEngine->stopScreenCapture();
 
 	if (ret == 0)
 		m_bScreenCapture = bEnable;
@@ -501,9 +501,9 @@ void CAgoraObject::SetWantedRole(CLIENT_ROLE_TYPE role)
 	m_nWantRoleType = role;
 }
 
-BOOL CAgoraObject::SetClientRole(CLIENT_ROLE_TYPE role, LPCSTR lpPermissionKey)
+BOOL CAgoraObject::SetClientRole(CLIENT_ROLE_TYPE role)
 {
-	int nRet = m_lpAgoraEngine->setClientRole(role,lpPermissionKey);
+	int nRet = m_lpAgoraEngine->setClientRole(role);
 
 	m_nRoleType = role;
 
@@ -627,6 +627,20 @@ BOOL CAgoraObject::EnableLocalRender(BOOL bEnable)
 		nRet = apm->setParameters("{\"che.video.local.render\":true}");
 	else
 		nRet = apm->setParameters("{\"che.video.local.render\":false}");
+
+	return nRet == 0 ? TRUE : FALSE;
+}
+
+BOOL CAgoraObject::SetSCCParameter(BOOL bEnable)
+{
+	int nRet = 0;
+
+	AParameter apm(*m_lpAgoraEngine);
+
+	if (bEnable)
+		nRet = apm->setParameters("{\"che.video.scc_scroll\":1}");
+	else
+		nRet = apm->setParameters("{\"che.video.scc_scroll\":0}");
 
 	return nRet == 0 ? TRUE : FALSE;
 }

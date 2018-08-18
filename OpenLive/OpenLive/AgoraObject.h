@@ -104,7 +104,7 @@ public:
 	void SetWantedRole(CLIENT_ROLE_TYPE role);
 	int  GetWnatedRole() { return m_nWantRoleType; };
 
-	BOOL SetClientRole(CLIENT_ROLE_TYPE role, LPCSTR lpPermissionKey = NULL);
+	BOOL SetClientRole(CLIENT_ROLE_TYPE role);
 	int  GetClientRole() { return m_nRoleType; };
 
 	BOOL EnableAudioRecording(BOOL bEnable, LPCTSTR lpFilePath);
@@ -118,6 +118,8 @@ public:
     BOOL SetEncryptionSecret(LPCTSTR lpKey, int nEncryptType = 0);
 
     BOOL EnableLocalRender(BOOL bEnable);
+
+	BOOL SetSCCParameter(BOOL bEnable);
 
 	BOOL EnableWebSdkInteroperability(BOOL bEnable);
 
